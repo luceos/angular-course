@@ -1,5 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { ProductInterface } from './product.interface';
+import {Component, OnInit} from '@angular/core';
+import {ProductInterface} from './product.interface';
+import {ProductService} from './product.service';
 
 @Component({
     selector: 'pm-products',
@@ -8,36 +9,27 @@ import { ProductInterface } from './product.interface';
 })
 
 export class ProductListComponent implements OnInit {
+    pageTitle: string = 'Services';
     imageWidth: number = 50;
     imageMargin: number = 2;
     showImage: boolean = true;
-    listFilter: string = 'programming';
-    products: ProductInterface[] = [
-        {
-            'id': 1,
-            'name': 'Java Programming',
-            'code': 'JAV100',
-            'releaseDate': 'January 18th, 2017',
-            'description': 'Learn Java',
-            'price': 2100,
-            'starRating': 4.2,
-            'imageUrl': 'https://openclipart.org/image/300px/svg_to_png/86059/1285037485.png'
-        },
-        {
-            'id': 2,
-            'name': 'Python Programming',
-            'code': 'PRG400',
-            'releaseDate': 'August 19th, 2016',
-            'description': 'Learn Python',
-            'price': 1750,
-            'starRating': 4.8,
-            'imageUrl': 'https://openclipart.org/image/300px/svg_to_png/213924/python1.png'
-        }
-    ];
-    ngOnInit(): void {
-        // ..
+    listFilter: string = '';
+    products: ProductInterface[] = [];
+    errorMessage: string = '';
+
+    constructor(private service: ProductService) {
     }
+
+    ngOnInit(): void {
+        this.service.get()
+            .subscribe(products => this.products = products, error => this.errorMessage = <any>error);
+    }
+
     toggleImage() {
         this.showImage = !this.showImage;
+    }
+
+    onRatingClicked(message: string) {
+        this.pageTitle = this.pageTitle.replace(/:.*$/, '') + ': ' + message;
     }
 }

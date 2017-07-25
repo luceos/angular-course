@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-md-2">Filter by:</div>
             <div class="col-md-4">
-                <input type="text" [(ngModel)]="listFilter" />
+                <input [(ngModel)]="listFilter" />
             </div>
         </div>
         <div class="row">
@@ -19,7 +19,9 @@
                 <thead>
                 <tr>
                     <th>
-                        <button class="btn btn-primary" (click)="toggleImage()">{{ showImage ? 'Hide' : 'Show'}} image</button>
+                        <button class="btn btn-primary" (click)="toggleImage()">
+                            <span class="fa fa-{{ showImage ? 'compress' : 'expand' }}"></span>
+                        </button>
                     </th>
                     <th>Product</th>
                     <th>Code</th>
@@ -29,7 +31,7 @@
                 </tr>
                 </thead>
                 <tbody>
-                <tr *ngFor="let product of products">
+                <tr *ngFor="let product of products | productFilter:listFilter">
                     <td>
                         <img
                                 *ngIf="showImage"
@@ -39,11 +41,20 @@
                                 [style.margin.px]="imageMargin"
                         />
                     </td>
-                    <td>{{ product.name }}</td>
+                    <td>
+                        <a [routerLink]="['/product', product.id]">
+                            {{ product.name }}
+                        </a>
+                    </td>
                     <td>{{ product.code | lowercase }}</td>
                     <td>{{ product.releaseDate }}</td>
                     <td>{{ product.price | currency:'USD':true:'1.2-2' }}</td>
-                    <td>{{ product.starRating }}</td>
+                    <td>
+                        <star
+                                [rating]="product.starRating"
+                                (clicked)="onRatingClicked($event)"
+                        ></star>
+                    </td>
                 </tr>
                 </tbody>
             </table>
