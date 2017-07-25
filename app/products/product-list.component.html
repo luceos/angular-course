@@ -3,10 +3,14 @@
         {{ pageTitle }}
     </div>
     <div class="panel-body">
-        <div class="row">
-            <div class="col-md-2">Filter by:</div>
-            <div class="col-md-4">
-                <input [(ngModel)]="listFilter" />
+        <div class="row form-horizontal">
+            <div class="col-md-offset-8 col-md-3">
+                <div class="input-group">
+                        <span class="input-group-addon">
+                            <i class="fa fa-search"></i>
+                        </span>
+                    <input class="form-control" [(ngModel)]="listFilter"/>
+                </div>
             </div>
         </div>
         <div class="row">
